@@ -1,16 +1,24 @@
 
 export function EmailInput({
-    emailRef, emailError
+    emailRef, isAfterFirstSubmit,
+    emailError, setEmailError,
+    validateEmail
 }){
     return(
-        <>
+        <div className={`form-group ${emailError.length > 0 ? "error" : ""}`}>
+            <labe className="label">Email</labe>
             <input 
-                style={{marginBottom: "10px"}}
-                type="text"
-                placeholder="Please enter email address"
+                onChange={isAfterFirstSubmit
+                    ? e => setEmailError(validateEmail(e.target.value))
+                    : undefined
+                }
+                className="input"
+                type="email"
                 ref={emailRef}
             />
-            <p>{emailError}</p>
-        </>
+            {emailError.length > 0 && (
+                <div className="msg">{emailError.join(", ")}</div>
+            )}
+        </div>
     )
 }

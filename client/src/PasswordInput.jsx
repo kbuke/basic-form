@@ -1,17 +1,31 @@
 export function PasswordInput({
-    passwordRef, passwordError
+    passwordRef, isAfterFirstSubmit,
+    passwordError, setPasswordError,
+    validatePassword
 }){
     return(
-        <>
+        <div className={`form-group ${passwordError.length > 0 ? "error" : ""}`}>
+            <label className="label">
+                Password
+            </label>
             <input 
                 type="password"
-                placeholder="Enter your password"
-                style={{marginBottom: "10px"}}
+                className="input"
+                id="password"
                 ref={passwordRef}
+                onChange={
+                    isAfterFirstSubmit
+                        ? e => setPasswordError(validatePassword(e.target.value))
+                        : undefined 
+                }
             />
-            <p>
-                {passwordError}
-            </p>
-        </>
+            {passwordError.length > 0 && (
+                <div
+                    className="msg"
+                >
+                    {passwordError.join(", ")}
+                </div>
+            )}
+        </div>
     )
 }
